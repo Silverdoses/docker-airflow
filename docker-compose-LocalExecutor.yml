@@ -1,7 +1,8 @@
-version: '3.7'
+version: '3'
+
 services:
     postgres:
-        image: postgres:9.6
+        image: postgres:12.5
         environment:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
@@ -12,7 +13,7 @@ services:
                 max-file: "3"
 
     webserver:
-        image: puckel/docker-airflow:1.10.9
+        build: .
         restart: always
         depends_on:
             - postgres

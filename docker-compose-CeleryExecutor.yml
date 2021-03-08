@@ -1,11 +1,12 @@
-version: '2.1'
+version: '3'
+
 services:
     redis:
-        image: 'redis:5.0.5'
+        image: 'redis:6.0.9'
         # command: redis-server --requirepass redispass
 
     postgres:
-        image: postgres:9.6
+        image: postgres:12.5
         environment:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
@@ -16,7 +17,7 @@ services:
         #     - ./pgdata:/var/lib/postgresql/data/pgdata
 
     webserver:
-        image: puckel/docker-airflow:1.10.9
+        build: .
         restart: always
         depends_on:
             - postgres
@@ -43,7 +44,7 @@ services:
             retries: 3
 
     flower:
-        image: puckel/docker-airflow:1.10.9
+        build: .
         restart: always
         depends_on:
             - redis
@@ -55,7 +56,7 @@ services:
         command: flower
 
     scheduler:
-        image: puckel/docker-airflow:1.10.9
+        build: .
         restart: always
         depends_on:
             - webserver
@@ -74,7 +75,7 @@ services:
         command: scheduler
 
     worker:
-        image: puckel/docker-airflow:1.10.9
+        build: .
         restart: always
         depends_on:
             - scheduler
